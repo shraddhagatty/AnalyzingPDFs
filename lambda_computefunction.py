@@ -100,29 +100,39 @@ def lambda_handler(event, context):
     
     reader = PdfReader(local_pdf)
     number_of_pages = len(reader.pages)
-    
+    count = {
+          '0': 0,
+          '1': 0,
+          '2': 0,
+          '3': 0,
+          '4': 0,
+          '5': 0,
+          '6': 0,
+          '7': 0,
+          '8': 0,
+          '9': 0,
+         
+        }
     #
     # for each page, extract text, split into words,
     # and see which words are numeric values:
     #
+    
     for i in range(0, number_of_pages):
       page = reader.pages[i]
       text = page.extract_text()
       words = text.split()
       print("** Page", i, ", text length", len(text), ", num words", len(words))
+      
       for word in words:
         word = word.translate(str.maketrans('', '', string.punctuation))
+        
         if word.isnumeric():
-          #
-          # find the first non-zero digit and count it:
-          #
-          #
-          # TODO
-          #
-          pass
-
-
-    
+          for char in word:
+            if char.isdigit() and char!='0':
+              count[char] += 1
+              break
+        
     #
     # write the results to local results file:
     #
@@ -130,12 +140,9 @@ def lambda_handler(event, context):
     outfile.write("**RESULTS**\n")
     outfile.write(str(number_of_pages))
     outfile.write(" pages\n")
-
-
-    #
-    # TODO: Write the 10 counts
-    #
-    
+    for key,value in count.items():
+      outfile.write(str(key) + " "+ str(value) + "\n")
+     
 
     outfile.close()
     
