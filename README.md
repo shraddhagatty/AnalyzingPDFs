@@ -1,4 +1,4 @@
-# AnalyzingPDFs-Serverless
+# Analyzing PDFs -Serverless
 
 ## Overview
 
